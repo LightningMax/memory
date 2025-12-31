@@ -1,6 +1,15 @@
 import { cardValues } from "@/data/data";
 import { ref } from "vue";
 
+// algorithmie pour mélanger les cartes (Fisher–Yates)
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
 function createDeck(cardvalues) {
   const duplicatedCards = [...cardValues, ...cardValues];
 
@@ -19,4 +28,4 @@ export function flipCard(card) {
   card.isFlipped = true;
 }
 
-export const cards = ref(createDeck(cardValues));
+export const cards = ref(shuffle(createDeck(cardValues)));
