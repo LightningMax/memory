@@ -1,14 +1,14 @@
 <script setup>
 import { useGameLogic } from "@/composables/useGameLogic";
 import Card from "./Card.vue";
-const { cards, hasWon, flipCard } = useGameLogic();
+const { cards, hasWon, moves, flipCard } = useGameLogic();
 </script>
 
 <template>
   <div v-if="hasWon">
     <p>You win!</p>
   </div>
-
+  <p>moves: {{ moves }}</p>
   <div class="cards">
     <Card
       v-for="card in cards"

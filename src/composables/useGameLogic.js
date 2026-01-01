@@ -25,6 +25,7 @@ export function useGameLogic() {
   const flippedCards = ref([]);
   const cards = ref(shuffle(createDeck(cardValues)));
   const hasWon = ref(false);
+  const moves = ref(0);
 
   function flipCard(card) {
     if (card.isFlipped) return;
@@ -48,10 +49,18 @@ export function useGameLogic() {
   function checkMatch() {
     const [first, second] = flippedCards.value;
 
+    // verifier si la premier carte est égale à la deuxième
     if (first.value === second.value) {
       first.isMatched = true;
       second.isMatched = true;
+
+      // reset le tableau de cartes retournés
       flippedCards.value = [];
+
+      // increment le nb d'essais
+      moves.value++;
+
+      // determine si la partie est finie
       if (checkWin()) {
         hasWon.value = true;
       }
@@ -60,8 +69,9 @@ export function useGameLogic() {
         first.isFlipped = false;
         second.isFlipped = false;
         flippedCards.value = [];
+        moves.value++;
       }, 800);
     }
   }
-  return { cards, hasWon, flipCard };
+  return { cards, hasWon, moves, flipCard };
 }
