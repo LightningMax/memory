@@ -10,7 +10,7 @@ function shuffle(array) {
   return array;
 }
 
-function createDeck(cardvalues) {
+function createDeck() {
   const duplicatedCards = [...cardValues, ...cardValues];
 
   return duplicatedCards.map((value, index) => ({
@@ -21,37 +21,39 @@ function createDeck(cardvalues) {
   }));
 }
 
-const flippedCards = ref([]);
+export function useGameLogic() {
+  const flippedCards = ref([]);
+  const cards = ref(shuffle(createDeck(cardValues)));
 
-export function flipCard(card) {
-  if (card.isFlipped) return;
-  if (card.isMatched) return;
-  if (flippedCards.value.length >= 2) return;
+  function flipCard(card) {
+    if (card.isFlipped) return;
+    if (card.isMatched) return;
+    if (flippedCards.value.length >= 2) return;
 
-  card.isFlipped = true;
+    card.isFlipped = true;
 
-  // Ajouter la carte au tableau des cartes retournées
-  flippedCards.value.push(card);
-  if (flippedCards.value.length === 2) {
-    // Vérifie si les paires de cartes sont égales
-    checkMatch();
+    // Ajouter la carte au tableau des cartes retournées
+    flippedCards.value.push(card);
+    if (flippedCards.value.length === 2) {
+      // Vérifie si les paires de cartes sont égales
+      checkMatch();
+    }
   }
-}
 
-function checkMatch() {
-  const [first, second] = flippedCards.value;
+  function checkMatch() {
+    const [first, second] = flippedCards.value;
 
-  if (first.value === second.value) {
-    first.isMatched = true;
-    second.isMatched = true;
-    flippedCards.value = [];
-  } else {
-    setTimeout(() => {
-      first.isFlipped = false;
-      second.isFlipped = false;
+    if (first.value === second.value) {
+      first.isMatched = true;
+      second.isMatched = true;
       flippedCards.value = [];
-    }, 800);
+    } else {
+      setTimeout(() => {
+        first.isFlipped = false;
+        second.isFlipped = false;
+        flippedCards.value = [];
+      }, 800);
+    }
   }
+  return { cards, flipCard };
 }
-
-export const cards = ref(shuffle(createDeck(cardValues)));

@@ -1,6 +1,7 @@
 <script setup>
+import { useGameLogic } from "@/composables/useGameLogic";
 import Card from "./Card.vue";
-import { cards, flipCard } from "@/composables/useGameLogic";
+const { cards, flipCard } = useGameLogic();
 </script>
 
 <template>
