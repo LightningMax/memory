@@ -24,6 +24,7 @@ function createDeck() {
 export function useGameLogic() {
   const flippedCards = ref([]);
   const cards = ref(shuffle(createDeck(cardValues)));
+  const hasWon = ref(false);
 
   function flipCard(card) {
     if (card.isFlipped) return;
@@ -40,6 +41,10 @@ export function useGameLogic() {
     }
   }
 
+  function checkWin() {
+    return cards.value.every((card) => card.isMatched);
+  }
+
   function checkMatch() {
     const [first, second] = flippedCards.value;
 
@@ -47,6 +52,9 @@ export function useGameLogic() {
       first.isMatched = true;
       second.isMatched = true;
       flippedCards.value = [];
+      if (checkWin()) {
+        hasWon.value = true;
+      }
     } else {
       setTimeout(() => {
         first.isFlipped = false;
@@ -55,5 +63,5 @@ export function useGameLogic() {
       }, 800);
     }
   }
-  return { cards, flipCard };
+  return { cards, hasWon, flipCard };
 }
