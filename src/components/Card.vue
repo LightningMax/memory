@@ -14,7 +14,7 @@ function handleClick() {
 
 <template>
   <div class="card" @click="handleClick">
-    {{ props.card.isFlipped ? props.card.value : "?" }}
+    {{ props.card.isFlipped || props.card.isMatched ? props.card.value : "?" }}
   </div>
 </template>
 
