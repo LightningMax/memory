@@ -23,7 +23,7 @@ function createDeck() {
 
 export function useGameLogic() {
   const flippedCards = ref([]);
-  const cards = ref(shuffle(createDeck(cardValues)));
+  const cards = ref([]);
   const hasWon = ref(false);
   const moves = ref(0);
 
@@ -73,5 +73,19 @@ export function useGameLogic() {
       }, 800);
     }
   }
-  return { cards, hasWon, moves, flipCard };
+
+  function startGame() {
+    cards.value = shuffle(createDeck(cardValues));
+    hasWon.value = false;
+    moves.value = 0;
+    flippedCards.value = [];
+  }
+
+  function resetGame() {
+    startGame();
+  }
+
+  startGame();
+
+  return { cards, hasWon, moves, flipCard, resetGame };
 }

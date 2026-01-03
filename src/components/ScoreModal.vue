@@ -21,7 +21,7 @@ import { ref } from "vue";
 
 // On reçoit les stats de la partie via des "props"
 const props = defineProps(["time", "moves", "difficulty"]);
-const emit = defineEmits(["save"]); // Pour envoyer l'événement au parent
+const emit = defineEmits(["save", "replay"]); // Pour envoyer l'événement au parent
 
 const pseudo = ref("");
 
@@ -32,5 +32,7 @@ const saveAndClose = () => {
     moves: props.moves,
     // difficulty: props.difficulty,
   });
+
+  emit("replay");
 };
 </script>

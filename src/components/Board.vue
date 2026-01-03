@@ -1,22 +1,30 @@
 <script setup>
-import { useGameLogic } from "@/composables/useGameLogic";
 import Card from "./Card.vue";
 import ScoreModal from "./ScoreModal.vue";
-import { useHistory } from "@/composables/useHistory";
-const { cards, hasWon, moves, flipCard } = useGameLogic();
-const { addGame } = useHistory();
+
+defineProps({
+  cards: Array,
+  hasWon: Boolean,
+  moves: Number,
+});
+
+const emit = defineEmits(["flip", "saveGame", "replay"]);
 </script>
 
 <template>
-  <div v-if="hasWon">
-    <ScoreModal :moves="moves" @save="addGame" />
-  </div>
+  <ScoreModal
+    v-if="hasWon"
+    :moves="moves"
+    @save="emit('saveGame', $event)"
+    @replay="emit('replay')"
+  />
+
   <div class="cards">
     <Card
       v-for="card in cards"
       :key="card.id"
       :card="card"
-      @select="flipCard"
+      @select="emit('flip', card)"
     />
   </div>
 </template>
@@ -24,7 +32,7 @@ const { addGame } = useHistory();
 <style>
 .cards {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: repeat(4, 1fr);
   width: 400px;
 }
 </style>
