@@ -1,14 +1,16 @@
 <script setup>
 import { useGameLogic } from "@/composables/useGameLogic";
 import Card from "./Card.vue";
+import ScoreModal from "./ScoreModal.vue";
+import { useHistory } from "@/composables/useHistory";
 const { cards, hasWon, moves, flipCard } = useGameLogic();
+const { addGame } = useHistory();
 </script>
 
 <template>
   <div v-if="hasWon">
-    <p>You win!</p>
+    <ScoreModal :moves="moves" @save="addGame" />
   </div>
-  <p>moves: {{ moves }}</p>
   <div class="cards">
     <Card
       v-for="card in cards"
@@ -17,7 +19,6 @@ const { cards, hasWon, moves, flipCard } = useGameLogic();
       @select="flipCard"
     />
   </div>
-  <pre>{{ cards }}</pre>
 </template>
 
 <style>
